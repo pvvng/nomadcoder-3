@@ -4,11 +4,20 @@ import { createActionResult } from "@/lib/create-action-result";
 import { z } from "zod";
 
 const loginSchema = z.object({
-  email: z.string(),
-  username: z.string(),
+  email: z
+    .string()
+    .refine(
+      (email) => email.endsWith("@zod.com"),
+      "only @zod.com emails are allowed"
+    ),
+  username: z.string().min(5),
   password: z
     .string()
-    .refine((password) => password === "12345", "Wrong Password"),
+    .min(10)
+    .regex(
+      /^(?=.*[A-Za-z])(?=.*\d).+$/,
+      "password should contain at least one number (0123456789)"
+    ),
 });
 
 export async function login(_: any, formData: FormData) {
