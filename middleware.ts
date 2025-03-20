@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import getSession from "./lib/session";
 
-const publicOnlyURL = new Set(["/", "/log-in", "/create-account"]);
+const publicOnlyURL = new Set(["/log-in", "/create-account"]);
 
 export async function middleware(req: NextRequest) {
   const isPublicPath = publicOnlyURL.has(req.nextUrl.pathname);
@@ -10,7 +10,7 @@ export async function middleware(req: NextRequest) {
   // 로그아웃 상태
   // private page 이동 시도
   if (!isLoggedIn && !isPublicPath) {
-    return NextResponse.redirect(new URL("/", req.url));
+    return NextResponse.redirect(new URL("/log-in", req.url));
   }
 
   // 로그인 상태
